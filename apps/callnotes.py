@@ -3,37 +3,41 @@ import pyperclip
 
 def submit(btn):
 
+    id = app.getEntry("ID")
     name = app.getEntry("Name")
     telephone = app.getEntry("Telephone")
     drug = app.getEntry("Drug")
     inquiry = app.getEntry("Inquiry")
     call_notes = app.getTextArea("Notes")
 
-
     text = f"{drug}; {inquiry}: {call_notes}"
 
-    # copies submitted text
-    pyperclip.copy(text)
-    app.setTextArea("Notes Submitted", text)
-
-
-    # table creation with submitted data
+    # if call notes is too lengthy this will decrease the amount of info in the database
+    if len(call_notes) > 15:
+        call_notes = call_notes[:15:] + "........"
 
     # for each submission an additional row is created
-    app.addTableRow("History", [name, telephone, drug, inquiry, call_notes])
-    app.getTableEntries("History")
+    app.addTableRow("History", [id, name, telephone, drug, inquiry, call_notes])
+
 
     app.clearAllEntries()
     app.clearAllTextAreas()
 
+    pyperclip.copy(text)
+    app.setTextArea("Notes Submitted", text)
+
+
+
 def retrieve(btn):
-    app.getTableEntries("History")
+    get = app.getTableEntries("History")
+    print(get)
 
 
 
 app = gui('Work Tool', useTtk=True)
 app.setTtkTheme('winnative')
 
+app.addEntry("ID")
 app.addEntry("Name")
 app.addEntry("Telephone")
 app.addEntry("Drug")
@@ -44,6 +48,7 @@ app.addRadioButton("choice", "No")
 app.addLabel("Call Notes:")
 app.addTextArea("Notes")
 
+app.setEntryDefault("ID", "Member ID")
 app.setEntryDefault("Name", "Name")
 app.setEntryDefault("Telephone", "Telephone Number")
 app.setEntryDefault("Drug", "Drug")
@@ -53,10 +58,8 @@ app.addButton("SUBMIT", submit)
 app.addTextArea("Notes Submitted")
 
 app.addTable("History",
-                 [['Name', 'Telephone', 'Drug', 'Inquiry', 'Call Notes']])
+                 [['ID', 'Name', 'Telephone', 'Drug', 'Inquiry', 'Call Notes']])
 
 app.button("GET DATA", retrieve)
-
-
 
 app.go()
