@@ -19,19 +19,11 @@ def submit(btn):
     # for each submission an additional row is created
     app.addTableRow("History", [id, name, telephone, drug, inquiry, call_notes])
 
-
     app.clearAllEntries()
     app.clearAllTextAreas()
 
     pyperclip.copy(text)
     app.setTextArea("Notes Submitted", text)
-
-
-
-def retrieve(btn):
-    get = app.getTableEntries("History")
-    print(get)
-
 
 
 app = gui('Work Tool', useTtk=True)
@@ -60,6 +52,5 @@ app.addTextArea("Notes Submitted")
 app.addTable("History",
                  [['ID', 'Name', 'Telephone', 'Drug', 'Inquiry', 'Call Notes']])
 
-app.button("GET DATA", retrieve)
 
 app.go()
