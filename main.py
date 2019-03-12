@@ -9,10 +9,7 @@ def submit(btn):
     inquiry = app.getEntry("Inquiry")
     call_notes = app.getTextArea("Notes")
 
-    if app.getRadioButton("choice") == "Yes":
-        text = f"{drug}; {inquiry}; Med D: {call_notes}"
-    else:
-        text = f"{drug}; {inquiry};: {call_notes}"
+    text = f"{drug}; {inquiry}; Med D: {call_notes}"
 
     # if call notes is too lengthy this will decrease the amount of info in the database
     if len(call_notes) > 15:
@@ -21,6 +18,7 @@ def submit(btn):
     # for each submission an additional row is created
     app.addTableRow("History", [id, name, telephone, drug, inquiry, call_notes])
 
+    # once the call notes have been submitted the pyperclip module allows you to copy text without highlighting
     pyperclip.copy(text)
     app.setTextArea("Notes Submitted", text)
 
@@ -60,9 +58,6 @@ app.addLabel("Name of drug:")
 app.addEntry("Drug")
 app.addLabel("Reason for call")
 app.addEntry("Inquiry")
-app.addLabel("Does the patient have MedD:")
-app.addRadioButton("choice", "Yes")
-app.addRadioButton("choice", "No")
 app.addLabel("Call Notes:")
 app.addTextArea("Notes")
 
@@ -84,6 +79,10 @@ app.addButtons(["Title Case", "lower case"], [title, lower])
 
 app.stopTab()
 
+app.startTab("History/Text")
+app.addTextArea("Data")
+app.stopTab()
+
 app.startTab("History")
 # when all of the information in call notes is completed this tab creates a table with that data
 app.addTable("History",
@@ -94,3 +93,13 @@ app.stopTabbedFrame()  # stop tabbed frame
 
 
 app.go()
+
+"""
+Copyright 2015-2017 Richard Jarvis
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+"""
